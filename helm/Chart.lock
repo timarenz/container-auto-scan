@@ -1,0 +1,6 @@
+dependencies:
+- name: proxy-scanner
+  repository: https://lacework.github.io/helm-charts
+  version: 0.2.10
+digest: sha256:495a1457bf398001f12399762af95a0c27614c4b7b9618a2fca067793a8e12e5
+generated: "2022-03-09T11:56:40.492707+01:00"

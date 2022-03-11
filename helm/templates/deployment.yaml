@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  revisionHistoryLimit: 0
+  selector:
+    matchLabels:
+      app: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Release.Name }}
+    spec:
+      containers:
+      - image: alannix/container-auto-scan:latest
+        name: {{ .Release.Name }}
+        args: ["-d", "--proxy-scanner", "{{ .Values.container_auto_scan.proxy_scanner_url }}"]
+        env:
+        - name: LW_ACCOUNT
+          value: {{ .Values.container_auto_scan.lacework.account | quote }}
+        - name: LW_SUBACCOUNT
+          value: {{ .Values.container_auto_scan.lacework.sub_account | quote }}
+        - name: LW_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: api-key
+        - name: LW_API_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Release.Name }}-secret
+              key: api-secret
